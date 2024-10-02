@@ -1,0 +1,483 @@
+31:- Handle calenders in selenium
+
+	*) Initially select date by right clicking and clicking inspect button
+	*) Then write dynamic xpath
+		ex:- //div[@id='monthWrapper']//tr//td[@class!='inActiveTD weekend']
+			This above xpath get the dates apart from inactive or holiday weekends
+			div is a parent class->afte tr-->td[@class]
+	*) After that use:
+		code:
+		# select all the dates and store in Select_date variable
+		select_date=driver.find_elements(By.XPATH,"//div[@id='monthWrapper']//tr//td[@class!='inActiveTD weekend']")
+		
+		# loop through select _date and get the required attribuite 
+		for i in search_date:
+			if i.get_attribute("date-date")=="30/08/2024":
+				i.click()
+				break
+				
+
+32:- How to take screenshots in selenium
+
+	*) We can take screenshots using 3 methods
+		a)Method 1:- take particular element screenshot
+			code:-
+			continuebutton=driver.get_screenshot_as_file("C:\\Users\\Feelgood\\Documents\\get_screenshot.png")
+			continuebutton.screenshot(".\\test.png") #".\\test.png" is path of file to be saved here it's in current dir
+			
+		b) Method 2:- To take whole page screenshot
+			code:
+			driver.get_screenshot_as_file("C:\\Users\\Feelgood\\Documents\\get_screenshot.png")
+			driver.save_screenshot(".\\save_screenshot_method.png")
+			
+			
+33:- How to use javscript in selenium
+	driver.execute_script("window.open('https://training.rcvacademy.com','_self');")
+        time.sleep(8)
+        driver.execute_script("window.open('https://training.revacademy.com/', 'self');")
+        time.sleep(8)
+        demo_element = driver.execute_script("return document.getElementsByTagName('p')[1];")
+        driver.execute_script("arguments[0].click();", demo_element)
+		
+		
+34:- Using handle we can handle multiple windows(refer Demo_Multiple_Windows_34.py)
+	driver.current_window_handle :- gives current window handle
+	
+	driver.window_handle :- gives all the tab handle
+	
+35:- Handle iframes(35_Demo_Handle_Iframe.py):- Iframe means entire webpage can be split into 2 web pages and to perform 
+	operations in any web element 1st we need to switch to particular web frame.
+	
+	ex:- push notification in yatra.com(allow or i'll do it later button'
+	    def handle_iframes(self):
+        driver.get("https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_iframe_frameborder_css")
+        driver.maximize_window() # to maximize window
+        driver.switch_to.frame(driver.find_element(By.XPATH, "//iframe[@id='iframeResult']")) # switching to iframe to perform action
+        driver.switch_to.frame(1)# if web element has iframe having same id and name switch using index and then perform operation
+        time.sleep(4)
+        driver.find_element(By.XPATH, "//a[text()='PYTHON']").click()
+        time.sleep(4)
+        driver.switch_to.default_content()
+		
+36:- Handle alerts:- Use driver.switch_to.alerts method to handle alerts
+					code:- driver.switch_to.alert.accept()--> to accept/ck=lick ok 
+							driver.switch_to.alert.dismiss()--> to cancel or dismiss alert
+							driver.switch_to.alert.send_keys("chetyhan")--> to type text in pop up
+							driver.switch_to.alert.text--> to get a text present in popup/alert
+					or 
+							import selenium.webdriver.common.alert.Alert
+							Alert(driver).accept()
+							Alert(driver).dismiss()
+							
+							
+							
+40:- Handle slider in selenium
+	left_slider=driver.find_element(By.XPATH,"//a[contains(@class,'left-handle')]")
+        right_slider=driver.find_element(By.XPATH,"//a[contains(@class,'right-handle')]")
+        #Method 1
+        ActionChains(driver).drag_and_drop_by_offset(left_slider,30,0).perform()
+        time.sleep(2)
+
+        #Method 2
+        ActionChains(driver).click_and_hold(left_slider).pause(1).move_by_offset(20,0).release().perform()
+        time.sleep(4)
+
+        #Method 3
+        ActionChains(driver).move_to_element(left_slider).pause(1).click_and_hold(left_slider).move_by_offset(50,0).release().perform()
+        time.sleep(4)
+
+        #Method to slide right slider to letf
+        ActionChains(driver).drag_and_drop_by_offset(right_slider,-60,0).perform()
+        time.sleep(2)
+		
+		
+		
+41:- Go through the video again
+
+42:- Implicit wait
+	1) It is applicable for all the element in scripts
+		ex:- if we put driver.implicitly_wait(10)sec before launching url, it'll wait for all the elements till 10 sec
+			if it's not found in 10 sec it'll throw error.
+	2) Implicit_wait is dynamic wait:- If i search username and password button and add implicit wait like above
+		if both buttons found within 2 or 3 sec it'll exit the script without waiting till 10 sec, if not found
+		it'll wait till 10 sec. 
+		
+		
+43:- Explicit wait:- we use this wait to synchronize our script with web page
+	ex:- after launching website we need to wiat for few seconds to load all it's web element and this wait 
+		time is dynamic for these conditions we can use explicit wait .
+		
+	1) Explicit waits is particularly for web element( i,e we can impliment foo particular element it's not
+	for entire script as like implicit waits) 
+		
+		code:
+			from selenium.webdriver.support.wait import WebDriverWait
+			from selenium.webdriver.support import expected_conditions as EC
+			wait-WebDriverWait(driver,10)
+			wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@id='BE_flight_origin_date']"))).click()
+			all_dates = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@id='monthWrapper']//tr//td["
+            "@class!='inActiveTD weekend']"))).find_elements(By.XPATH, "//div[@id='monthWrapper']//tr//td[@class!='inActiveTD weekend']")
+            
+            for i in all_dates:
+                if i.get_attribute("data-date") == "25/08/2024":
+                    i.click()
+                    # time.sleep(3)
+                    break
+
+44:- Fluent waits:- adding pollfrequency and ignore_exceptions in explicit waits is called fluent wait.
+	ex:- wait-WebDriverWait(driver,10,pollfrequency=seconds,ignore_exceptions=[ElementClickInterceptionException,Exception2])
+	poll_frequency= Till this time that particular web element is not searched
+		ee time thanka example frames kottidre aa frames na search madalla after this time aa element 
+		na search madutte.
+		
+		
+		
+45:- WHAT IS TEST AUTOMATION FRAMEWORK:-
+Framework (Dictionary meaning)-An essential supporting structure of a building, vehicle, or object.
+*)A test automation framework is a supporting structure and set of guidelines used for creating and
+designing test cases.
+*)Test automation is a combination of tools and practices which help testers to test more efficiently.
+	
+Some of the Practices could be:
+
+• Coding standards
+• Handling test data
+• Object repositories
+• Storing test results
+• Using external libraries
+
+
+Some Benefits of Test Automation Framework:
+
+• Saves time
+• Ensure best practices are followed
+• Low cost to maintain
+• Code reusability
+
+
+PYTEST TUTORIALS
+
+1) Install Pytest using pip install pytest and add those path to env variables
+2) create a package and file name should start with test_ or __test to run files in pytest
+3) configure file to pytest:=-Right side top before run button click edit configure and click + button--> select pytest--> select script location-->
+ apply and ok.
+	*) to execute multiple files using cmd navigate to scipts location and run pytest or edit configuration--> add entire projecrt folder
+	
+4) pytest.mark.custom_variable--> same like tags in behave
+	ex:- @pytest.mark.sanity
+		def testLogin():
+		print("Login")
+		execute code:- pytest -m sanity
+		
+		o/p:- one test passed
+		
+		
+	*) pytest.mark.skip--> to skip the test
+	*) pytest.mark.xfail-->xfail will not fail the test case even if the assertion is failed
+	
+5) Fixtures():- fixtures are used to provide pre requisits and after actions procedure like logout and driver.close()
+				ex:- @pytest.fixture()
+					def setUp():
+						print("Launch browser")
+						print("All items are loaded")
+						yield
+						print("Logoff")
+						print("Close window")
+
+					@pytest.mark.sanity
+					def testLogin(setUp):
+						print("Login")
+						
+				execute code:- pytest -s LearnPytest\test_login.py 
+				
+				o/p:- LearnPytest\test_login.py 
+				
+						Launch browser
+						All items are loaded
+						Login
+						.Logoff
+						Close window
+						sLaunch browser
+						All items are loaded
+						divide method asserted successfully
+						.Logoff
+						Close window
+						
+6) coftest.py:- this file is used to place all the fixtures()
+	code:-
+			@pytest.fixture(scope="function", autouse=True)
+			def tc_setup():
+			print("Launch browser")
+			print("Login")
+			print("Browse products")
+			yield
+			print("Logoff")
+			print("Close browser")
+			
+		The above code will excute before actual test case started and lines after "yield" will run after sending all the sessions
+		
+		scope:- function:- same output as 5( everytime setup procedures login agi actions execute agi logout agutte , again for test case 2 same agutte)
+				session:- execute pre requisits in conftest.py(before yield line)--> excute all test cases --> execute after yield lines
+						( example ge 1st browser login agi yella test case execute agi browser logout agutte for particular session)
+				class
+				module
+				package
+				
+		autouse=True:- every time testcase run ago munche automatically conftest.py file run agutte.
+		
+		autouse=False:- need to specify def test_login(tc_setup) in testcase file if i select autouse=False, so that aa particular testcase ge setup run agutte
+		
+		Note:- refer https://docs.pytest.org/en/stable/how-to/fixtures.html#fixture-scopes for more on scopes
+		
+		
+7) parameterize the fixtures
+	1) import pytest
+		@pytest.fixture (params=["a", "b"])
+		def demo fixture(request):
+		print(request.param)
+		
+	2)	@pytest.mark.parametrize("a, b, final", [(2, 6, 8), (5, 8, 15), (5, 10, 15)])
+		def testAdd(a, b, final):
+		assert a+b == final
+I
+8) Unable to get output go through again
+		
+
+ SELENIUM CONTINUATION
+ 46 and 47:- Framework files creation
+ 
+ 48:- setup conftest.py for tearup and teardown method
+		Note:- we need to use def test_ line to detect pytest to detect the testcase.
+				*) use self.driver and self.wait in testcase file which is test_filename
+				*)
+				
+				
+49:- Use POM(Pge object model):- what ever the actions are tehre in the particular page code those pages separately and call them in main function file
+	Ex:- 1st setup is done in conftest.py file--> next yatra home page actions is coded in yatra_homepage.py by creating a class HomePage()-->
+		Search_results page action code is in separate file then all the codes call in main test_search_flight2.py file
+		
+		
+50:- Use base_driver package and create a file name base_driver.py and in that
+		Create a page_scroll function and add all the page scroll code there and in the POM pages(yatra home page and search_flight_results) page
+			Use:- class HomePage(BaseDriver):
+				def __init__(self, driver):
+				super().__init__(driver)
+				self.driver = driver
+				
+				where BaseDriver--> is the parent class
+				super().__init__(driver) --> it means use of parents class init methos in the current class
+				
+				Then we can use methods/func written in base driver file in POM pages by using self.base_driver_method
+				
+				
+51:- Implement common function for explicit waits in base_driver.py file	
+	
+	in base_driver.py file create :-	    def wait_until_element_is_clickable(self, locator_type, locator):
+												wait = WebDriverWait(self.driver, 10)
+												element = wait.until(EC.element_to_be_clickable((locator_type, locator)))
+												return element
+
+											def wait_until_presence_of_elements(self, locator_type, locator):
+												wait = WebDriverWait(self.driver, 10)
+												list_of_elements = wait.until(EC.presence_of_element_located((locator_type, locator)))
+												return list_of_elements
+												
+	Then delete the self.wait in class __init__ methods of POM pages and test_search_flight2 page and directly use self.base_driver_wait_method in all
+	deleted places
+	
+52:- Use of Utils package by creating utils.py to use assertions method.
+
+53:- Refractor the POM pages by adding locators to variables separately and use them in functions and call the same in main file.
+
+54:- Merge all the separate func into 1 func and call those in main file
+
+55:- Refractor the searchflight results method in POM flight_results_page
+
+56:- Create an object of 2nd POM (i,e results_page in our example) in Yatra_home_page to avoid multiple object declaration in the main file
+	ex:=# # Create a next page object here only to link between the pages and to reduce the multiplle object creation in the main file
+        search_flight_results=ResultsPage(driver=self.driver)
+        return search_flight_results
+		
+		In main test_search_flight2 file
+			# Doing all the operations at once
+        code:-search_flight_result=self.lp.POM_all_methods_Homepage(departlocation="Bangalore",goingtoloctaion="Mumbai", departureDate="06/09/2024")
+			
+			search_flight_result.filter_by_0_stop() # These are 2nd POM page methods
+			search_flight_result.filter_by_1_stop()
+			all_1_stop_counts=search_flight_result.get_flight_results()
+			
+
+57:- Create one method in min file and declare all the obj creation in that file and use @pytest.fixture(autouse=True) above that func so that
+	it will be initialized at once before executing the methods
+		ex:	
+			@pytest.fixture(autouse=True)
+			def class_setup(self):
+				lp=Homepage()
+				assertion=utils()
+				
+				
+				
+58:- Soft assertions:- These are the assrtions we will put in our scripts wghere even if the assertion got failed we need to continue checking 
+	for other assertions instead of stopping the script like hard assertion
+	
+	
+	Usage:
+		1) Import softes by "Pip install softest" in working directory
+		2) In main file class add class MainFile(softest.TestCase)
+			ex:- in test_search_flight2.py file use "class Test_Search_Flight(softest.TestCase):"
+		3) In the util files where assertion methods are written there use below code:
+			code:
+			import softest
+			class Utils(softest.TestCase):
+				def assertwithtext(self,list,value):
+					# Assertion:- checking 1 stop text is present in all lists
+					
+					for results in list:
+						self.soft_assert(self.assertIn,value,results.text,"Check whether vlue is present in assertion")
+						
+					self.assert_all() # This line is to collect all the assert pass and failed conditions
+					print("assert passed")
+					print(len(list))
+					
+		Note:- self.asserIn in line no 336 is one of the method of soft_assert we can explore other methods. Commonly used are
+			self.assertEqual-->to compare the results, self.asserIn--> to check value in
+			
+59:- Run Selenium tests on multiple browser
+	In conftest.py 
+		code :
+			@pytest.fixture(scope='class',autouse=True)
+			def setup(request,browser):
+				    if browser == "edge":
+						driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+					elif browser == "ff":
+						driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+					elif browser=="chrome":
+						driver= webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+					else:
+						# driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+						# driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+						driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+
+					driver.get("https://www.yatra.com/")
+					driver.maximize_window()
+					request.cls.driver = driver
+					yield
+					driver.close()
+
+
+				def pytest_addoption(parser):
+					parser.addoption("--browser")
+
+				@pytest.fixture(scope="class",autouse=True)
+				def browser(request):
+					request.config.getoption("--browser")
+					
+	O/P:- While running in terminal use below code:
+				(base) (.venv) PS D:\Learnings\Selenium_Framework> pytest -v -s testcases\test_searchflight2.py --browser ff
+				
+				
+				
+60) See the video again to implement the custom logger for our testcase
+
+61:- Data driven testing(https://ddt.readthedocs.io/en/latest/example.html):- to pass multiple values in single shot we use ddt
+		1) Pip install ddt
+		2) In main file use	
+			from ddt import ddt,data,unpack
+		3) In main file :
+			code:- 	@pytest.mark.usefixtures("setup")
+					@ddt
+					class Test_Search_Flight(softest.TestCase):
+
+						@pytest.fixture(autouse=True)
+						def class_setup(self):
+							self.lp = HomePage(self.driver)
+							self.assertion = Utils()
+
+
+						@data(("Bangalore","Mumbai","06/10/2024"),("Chennai","colombo","23/11/2024"))
+						@unpack
+						def test_search_flight(self,going_from,going_to,date):
+						# Doing all the operations at once
+							search_flight_result = self.lp.POM_all_methods_Homepage(departlocation=going_from, goingtoloctaion=going_to,
+							departureDate = date)
+							
+							
+62) Data driven testing using json nd yml file:
+	1) Crete a json file under testdata directory and crete a payload
+	2) import ddt,file_data #for passing the file
+	3) In main file(test_search_flight2.py)
+	
+		use:- 	json_path=os.path.join(os.getcwd(),'testcases','testdata','testdata.json')
+				@file_data(json_path)
+				def test_search_flight(self,goingfrom,goingto,date):
+				   
+
+					# Doing all the operations at once
+					search_flight_result = self.lp.POM_all_methods_Homepage(departlocation=goingfrom, goingtoloctaion=goingto,
+					departureDate = date)
+					
+	4) Note: arguments passing in json file should be same as parameters passing in above func..Ex:- "goingfrom" in json file== "goingfrom" in func
+	
+63) Data driven testing using excel file:-
+	1) In utils file write code to read excel file and save the values in list :-
+		code:-     	def read_data_from_excel(file_name, sheet):
+					datalist = []
+					wb = load_workbook(file_name)
+					sh = wb[sheet]
+					row_ct = sh.max_row
+					col_ct = sh.max_column
+
+					for i in range(2, row_ct + 1):
+						row = []
+						for j in range(1, col_ct + 1):
+							row.append(sh.cell(row=i, column=j).value)
+						datalist.append(row)
+					return datalist	
+					
+	2) In main file (test_search_flight2.py):
+		
+		@data(*Utils.read_data_from_excel("D:\\Learnings\\Selenium_Framework\\testcases\\testdata\\tdataexcel.xlsx",
+                                      "Sheet1")) # * is passed to ensure that list is being passed as inp
+		@unpack
+		def test_search_flight(self, goingfrom, goingto, date):
+		# Doing all the operations at once
+			search_flight_result = self.lp.POM_all_methods_Homepage(departlocation=goingfrom, goingtoloctaion=goingto,
+			departureDate = date)
+			
+64) Data driven testing using csv file:-
+	
+	1) In utils file write code to read excel file and save the values in list :-
+		code:-     	def read_data_from_csv(filename):
+						#create an emplty list    
+						datalist = []
+						# open the file
+						csvfile = open(filename,"r")
+						# read the csv file
+						reader = csv.reader(csvfile)
+						#skip the headers from file
+						next(reader)
+
+						# Add values to datalist
+						for rows in reader:
+							datalist.append(rows)
+						return datalist
+
+	2) In main file (test_search_flight2.py):
+		
+		@data(*Utils.read_data_from_csv("D:\\Learnings\\Selenium_Framework\\testcases\\testdata\\tdatacsv.csv",
+                                      "Sheet1")) # * is passed to ensure that list is being passed as inp
+		@unpack
+		def test_search_flight(self, goingfrom, goingto, date):
+		# Doing all the operations at once
+			search_flight_result = self.lp.POM_all_methods_Homepage(departlocation=goingfrom, goingtoloctaion=goingto,
+			departureDate = date)
+			
+	Note:- @data(*Utils.read_data_from_csv) :- Don't forget to add * it suggest we re passing the inputs as list.
+	
+	
+	
+65) Generte HTML report:
+	1) Pip install Pytest-Html :- Instl pytest-html for reports.
+	
+	2) In execution code:- pytest -v -s testcases\test_searchflight2.py --browser ff --html=report.html --self-contained-html
+		--html=report.html --self-contained-html--> this is to generate html report
