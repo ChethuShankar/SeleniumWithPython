@@ -1,4 +1,4 @@
-31:- Handle calenders in selenium
+31:- Handle calenders in selenium-------Git path https://github.com/rcvacademy/selenium-python-automation-framework-code
 
 	*) Initially select date by right clicking and clicking inspect button
 	*) Then write dynamic xpath
@@ -92,7 +92,7 @@
 		
 		
 		
-41:- Go through the video again
+41:- Go through the video again: Explained waits in selenium
 
 42:- Implicit wait
 	1) It is applicable for all the element in scripts
@@ -113,7 +113,7 @@
 		code:
 			from selenium.webdriver.support.wait import WebDriverWait
 			from selenium.webdriver.support import expected_conditions as EC
-			wait-WebDriverWait(driver,10)
+			wait=WebDriverWait(driver,10)
 			wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@id='BE_flight_origin_date']"))).click()
 			all_dates = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@id='monthWrapper']//tr//td["
             "@class!='inActiveTD weekend']"))).find_elements(By.XPATH, "//div[@id='monthWrapper']//tr//td[@class!='inActiveTD weekend']")
@@ -481,3 +481,8 @@ I
 	
 	2) In execution code:- pytest -v -s testcases\test_searchflight2.py --browser ff --html=report.html --self-contained-html
 		--html=report.html --self-contained-html--> this is to generate html report
+		
+		
+		
+		
+Note:- Generate allure report for selenium with python https://youtu.be/kP-PnWBJPqA?si=Ce7YBqOZbdnAaEaN
